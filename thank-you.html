@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Good Bye</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        #card {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        #message {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        #fireworks {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="card">
+        <h1>Goodbye!</h1>
+        <p id="message">Dear friends and colleagues,<br>After an incredible journey at Auraa Brand Consultants and Aquanoirdigital.</p>
+        <p>Let's stay in touch and continue to create amazing memories together!</p>
+        <canvas id="fireworks"></canvas>
+    </div>
+
+    <script>
+        const card = document.getElementById('card');
+        const fireworksCanvas = document.getElementById('fireworks');
+        const ctx = fireworksCanvas.getContext('2d');
+
+        fireworksCanvas.width = card.clientWidth;
+        fireworksCanvas.height = card.clientHeight;
+
+        function animateFireworks() {
+            const numberOfParticles = 100;
+            const particles = [];
+
+            for (let i = 0; i < numberOfParticles; i++) {
+                particles.push({
+                    x: fireworksCanvas.width / 2,
+                    y: fireworksCanvas.height,
+                    size: Math.random() * 3 + 1,
+                    speedX: Math.random() * 3 - 1.5,
+                    speedY: -(Math.random() * 6 + 1),
+                    color: `hsl(${Math.random() * 360}, 100%, 50%)`
+                });
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, fireworksCanvas.width, fireworksCanvas.height);
+
+                particles.forEach(particle => {
+                    ctx.fillStyle = particle.color;
+                    ctx.beginPath();
+                    ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    particle.x += particle.speedX;
+                    particle.y += particle.speedY;
+                    particle.size -= 0.05;
+                });
+
+                particles.forEach((particle, index) => {
+                    if (particle.size <= 0) {
+                        particles.splice(index, 1);
+                    }
+                });
+
+                requestAnimationFrame(draw);
+            }
+
+            draw();
+        }
+
+        // Call the fireworks animation when the page loads
+        window.onload = function() {
+            fireworksCanvas.style.display = 'block';
+            animateFireworks();
+        };
+    </script>
+
+</body>
+</html>
